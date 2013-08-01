@@ -31,6 +31,8 @@ All available settings
 
 ## Change Log
 
+0.1.3: Fix Incorrect URL's in jQuery Plugin Manifest
+0.1.2: Rename Plugin
 0.1.1: Use the original parent rather than relying on .parent()
 0.1.0: Initial Commit
 
