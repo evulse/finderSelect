@@ -11,17 +11,6 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script src="jquery.bulkselect.js"></script>
-    <script>
-        $(function() {
-            $('#demo1').bulk_select();
-            $('#demo2').find('tbody').bulk_select();
-            $('#demo3').find('tbody').bulk_select({'class':'warning'});
-            $('#demo4').bulk_select({'class':'label-success','children':'span'});
-        });
-    </script>
     <style>
         tr.selected {
             background-color: #fffc9b;
@@ -215,6 +204,15 @@
 
 
 </div> <!-- /container -->
-
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="jquery.bulkselect.js"></script>
+<script>
+    $(function() {
+        $('#demo1').bulk_select();
+        $('#demo2').find('tbody').bulk_select();
+        $('#demo3').find('tbody').bulk_select({'class':'warning'});
+        $('#demo4').bulk_select({'class':'label-success','children':'span'});
+    });
+</script>
 </body>
 </html>
