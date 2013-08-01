@@ -1,0 +1,38 @@
+{
+    "name": "bulkselect",
+    "title": "jQuery Table Select",
+    "description": "jQuery Plugin for making child elements selectable supports Ctrl+Click, Command+Click and Shift+Click.",
+    "keywords": [
+        "select",
+        "table",
+        "selectable",
+        "highlight",
+        "tr",
+        "click",
+        "row"
+    ],
+    "version": "0.1.0",
+    "author": {
+        "name": "Mike Angell",
+        "email": "mike@evulse.com"
+    },
+    "maintainers": [
+        {
+            "name": "Mike Angell",
+            "email": "mike@evulse.com"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/evulse/bulkselect/LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/evulse/bulkselect/issues",
+    "homepage": "https://github.com/evulse/bulkselect",
+    "docs": "https://github.com/evulse/bulkselect",
+    "demo": "https://evulse.github.io/bulkselect",
+    "dependencies": {
+        "jquery": ">=1.7"
+    }
+}
