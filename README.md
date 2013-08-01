@@ -31,7 +31,9 @@ All available settings
 
 ## Change Log
 
+0.1.1: Use the original parent rather than relying on .parent()
 0.1.0: Initial Commit
+
 
 ## Live Demos
 *    [Basic Demo](http://evulse.github.io/bulkselect "jQuery Bulk Select - Demo")

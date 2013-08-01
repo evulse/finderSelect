@@ -65,9 +65,10 @@
 
         $(this).find(options.children).css('cursor', options.cursor);
 
+        var parent = $(this);
+
         return $(this).on(options.event, options.children, function(e){
-            var selected = $(this)
-            var parent = selected.parent();
+            var selected = $(this);
             var last = parent.data('bulk_select');
             var siblings = parent.find(options.children);
             var index = siblings.index(this);
@@ -82,7 +83,7 @@
                     }
                     parent.data('bulk_select', index);
                 } else {
-                    if (e.ctrlKey || e.altKey | e.metaKey) {
+                    if (e.ctrlKey || e.altKey || e.metaKey) {
                         if(selected.bulk_select_highlighted(options.class)) {
                             selected.bulk_select_unhighlight(options.class);
                             parent.data('bulk_select', null)
