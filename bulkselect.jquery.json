@@ -1,6 +1,6 @@
 {
     "name": "bulkselect",
-    "title": "jQuery Table Select",
+    "title": "jQuery Bulk Select",
     "description": "jQuery Plugin for making child elements selectable supports Ctrl+Click, Command+Click and Shift+Click.",
     "keywords": [
         "select",
@@ -11,7 +11,7 @@
         "click",
         "row"
     ],
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": {
         "name": "Mike Angell",
         "email": "mike@evulse.com"
