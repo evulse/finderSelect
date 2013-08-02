@@ -196,11 +196,17 @@
                     <td>Friday, 24 July 2013 4:59PM</td>
                 </tr>
             </table>
+
             <span><span id="demo1-count">0</span> File(s) Selected &nbsp;</span><br><br>
+            <button class="btn btn-primary btn-mini" id="demo1-trash">Send Selected to Trash</button><br><br>
             <pre>$(function() {
     $('#demo1').finderSelect({children:'tr'});
     $("#demo1").on("finderSelectUpdate", function(event){
         $('#demo1-count').html($(this).find('tr.selected').length)
+    });
+    $("#demo1-trash").click(function(){
+        $('#demo1').find('tr.selected').remove();
+        $('#demo1').trigger('finderSelectUpdate');
     });
 });</pre>
         </div>
@@ -347,6 +353,10 @@
         $('#demo1').finderSelect({children:'tr'});
         $("#demo1").on("finderSelectUpdate", function(event){
             $('#demo1-count').html($(this).find('tr.selected').length)
+        });
+        $("#demo1-trash").click(function(){
+            $('#demo1').find('tr.selected').remove();
+            $('#demo1').trigger('finderSelectUpdate');
         });
         $('#demo2').find('tbody').finderSelect();
         $('#demo3').find('tbody').finderSelect({class:'warning'});
