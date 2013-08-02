@@ -22,7 +22,11 @@
             enableShiftClick: true,
             enableCtrlClick: true,
             enableSingleClick: true,
-            enableDisableSelection: true
+            enableDisableSelection: true,
+            totalSelector: false,
+            menuSelector: false,
+            menuXOffset: 0,
+            menuYOffset: 0
 
         };
 
@@ -51,6 +55,16 @@
         if(options.enableShiftClick || options.enableCtrlClick || options.enableSingleClick) {
             $.fn.finderSelect.enableClick(parent, options);
         }
+
+        if(options.totalSelector) {
+            $.fn.finderSelect.totalUpdate(parent, options);
+        }
+
+        if(options.menuSelector) {
+            $.fn.finderSelect.loadMenu(parent, options);
+        }
+
+
 
     };
 
@@ -188,6 +202,7 @@
                     $.fn.finderSelect.setPrimary(parent, clicked);
                     $.fn.finderSelect.setSecondary(parent, null);
                 }
+
                 $.fn.finderSelect.triggerUpdate(parent);
             }
         });
@@ -234,5 +249,34 @@
     $.fn.finderSelect.getSecondary = function(el) {
         return el.data('finderSelectSecondary');
     }
+
+    $.fn.finderSelect.totalUpdate = function(el, options) {
+
+        el.on('finderSelectUpdate', function(){
+            $(options.totalSelector).html($(this).find(options.children).filter('.'+options.class).length)
+        });
+
+        return el;
+
+    };
+
+    $.fn.finderSelect.loadMenu = function(el, options) {
+
+        el.bind("contextmenu",function(e){
+            $(options.menuSelector).css({left:(e.pageX+options.menuXOffset),top:(e.pageY+options.menuYOffset)}).show();
+            return false;
+        });
+        el.bind("mousedown",function(e){
+            $(options.menuSelector).hide();
+        });
+        $(options.menuSelector).bind("click",function(e){
+            $(this).hide();
+        });
+
+        return el;
+
+    };
+
+
 
 }( jQuery ));
