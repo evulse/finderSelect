@@ -94,7 +94,6 @@
             var siblings = parent.find(options.children);
             var clicked = siblings.index(this);
             var next = siblings.index(siblings.eq(last).nextAll('.'+options.class).first());
-            console.log(last);
             if(!siblings.eq(last).finderSelectHighlighted(options.class)) {
                 last = next;
             }
@@ -165,7 +164,6 @@
                         parent.data('finderSelectSecondary', null)
                     }
                 }
-            console.log("Click:"+clicked+" Last:"+last+" Shift:"+shift+" Next:"+next);
 
         });
     };
