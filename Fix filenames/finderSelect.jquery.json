@@ -10,9 +10,10 @@
         "tr",
         "click",
         "finder",
-        "windows explorer",
-        "file manager",
-        "file explorer",
+        "explorer",
+        "manager",
+        "file",
+        "windows",
         "row"
     ],
     "version": "0.1.6",
