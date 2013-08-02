@@ -29,8 +29,21 @@ All available settings
         cursor: 'pointer'
     };
 
+Also the following event is omitted whenever an update occurs.
+
+    finderSelectUpdate
+
+This can be used to show total selected items
+
+    $('.table-select tbody').finderSelect({class:'warning'});
+
+    $(".table-select tbody").on("finderSelectUpdate", function(event){
+        $('.selected-count').html($(this).find('tr.warning').length)
+    });
+
 ## Change Log
 
+*    0.1.5: Add "finderSelectUpdate" event so external code can be aware of updates.
 *    0.1.4: Change to match Finder highlighting and rename from Batch Select to finderSelect.
 *    0.1.3: Fix Incorrect URL's in jQuery Plugin Manifest
 *    0.1.2: Rename Plugin
