@@ -1,5 +1,5 @@
 {
-    "name": "finderselect",
+    "name": "finderSelect",
     "title": "jQuery finderSelect",
     "description": "jQuery Plugin for matching file explorer functions making child elements selectable supports Ctrl+Click, Command+Click, Ctrl+Drag, Command+Drag and Shift+Click.",
     "keywords": [
