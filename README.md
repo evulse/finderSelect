@@ -43,6 +43,8 @@ This can be used to show total selected items
 
 ## Change Log
 
+*    0.1.9: Make plugin only work on left click so that a custom context menu can be used.
+*    0.1.7: Auto detect child element type if none specified.
 *    0.1.5: Add "finderSelectUpdate" event so external code can be aware of updates.
 *    0.1.4: Change to match Finder highlighting and rename from Batch Select to finderSelect.
 *    0.1.3: Fix Incorrect URL's in jQuery Plugin Manifest

@@ -49,7 +49,7 @@
 
         <div class="col-lg-12">
             <h2>Advanced Usage</h2>
-            <p>To enable selecting on all rows (some browsers add a tbody element to tables so specifying the child element type is required if no tbody exists) and include a row count.</p>
+            <p>This advanced demo shows a how finderSelect can be used as a component to create a file explorer. Make sure to try Ctrl/Cmd+Click, Shift+Click, Ctrl/Cmd+Click&Drag and Right Click on the table after you have made a selection.</p>
             <table class="table table-condensed" id="demo1">
                 <tr>
                     <td><i class="icon-file"></i></td>
@@ -197,17 +197,27 @@
                 </tr>
             </table>
 
-            <span><span id="demo1-count">0</span> File(s) Selected &nbsp;</span><br><br>
-            <button class="btn btn-primary btn-mini" id="demo1-trash">Send Selected to Trash</button><br><br>
+            <span><span class="demo1-count">0</span> File(s) Selected &nbsp;</span><br><br>
+            <button class="btn btn-primary btn-mini demo1-trash">Send Selected to Trash</button><br><br>
             <pre>$(function() {
-    $('#demo1').finderSelect({children:'tr'});
-    $("#demo1").on("finderSelectUpdate", function(event){
-        $('#demo1-count').html($(this).find('tr.selected').length)
-    });
-    $("#demo1-trash").click(function(){
-        $('#demo1').find('tr.selected').remove();
-        $('#demo1').trigger('finderSelectUpdate');
-    });
+        $('#demo1').finderSelect({children:'tr'});
+        $("#demo1").on("finderSelectUpdate", function(event){
+            $('.demo1-count').html($(this).find('tr.selected').length)
+        });
+        $('#demo1').bind("contextmenu",function(e){
+            $("#demo1-menu").css({left:e.pageX,top:e.pageY}).show();
+            return false;
+        });
+        $('#demo1').bind("mousedown",function(e){
+            $("#demo1-menu").hide();
+        });
+        $('#demo1-menu').bind("click",function(e){
+            $("#demo1-menu").hide();
+        });
+        $(".demo1-trash").click(function(){
+            $('#demo1').find('tr.selected').remove();
+            $('#demo1').trigger('finderSelectUpdate');
+        });
 });</pre>
         </div>
     <div class="col-lg-12">
@@ -344,17 +354,29 @@
 
     </div>
 
-
 </div> <!-- /container -->
+<ul class="dropdown-menu" id="demo1-menu">
+    <li><a class="demo1-trash">Trash <span class="demo1-count">0</span> File(s)</a></li>
+</ul>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="jquery.finderSelect.js"></script>
 <script>
     $(function() {
         $('#demo1').finderSelect({children:'tr'});
         $("#demo1").on("finderSelectUpdate", function(event){
-            $('#demo1-count').html($(this).find('tr.selected').length)
+            $('.demo1-count').html($(this).find('tr.selected').length)
         });
-        $("#demo1-trash").click(function(){
+        $('#demo1').bind("contextmenu",function(e){
+            $("#demo1-menu").css({left:e.pageX,top:e.pageY}).show();
+            return false;
+        });
+        $('#demo1').bind("mousedown",function(e){
+            $("#demo1-menu").hide();
+        });
+        $('#demo1-menu').bind("click",function(e){
+            $("#demo1-menu").hide();
+        });
+        $(".demo1-trash").click(function(){
             $('#demo1').find('tr.selected').remove();
             $('#demo1').trigger('finderSelectUpdate');
         });
