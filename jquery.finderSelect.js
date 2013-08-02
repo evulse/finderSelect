@@ -93,7 +93,13 @@
         if(cssClass === undefined) {
             cssClass = 'selected';
         }
-        return el.toggleClass(cssClass);
+        if($.fn.finderSelect.isHighlighted(el, cssClass)) {
+            $.fn.finderSelect.unHighlight(el, cssClass);
+        } else {
+            $.fn.finderSelect.highlight(el, cssClass);
+        }
+
+        return el;
     };
 
     $.fn.finderSelect.between = function(el,a, b) {

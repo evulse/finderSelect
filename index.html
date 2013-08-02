@@ -210,6 +210,74 @@
 });</pre>
         </div>
     <div class="col-lg-12">
+        <h2>Extending</h2>
+        <p>finderSelect was design to be easily extended. See the example below to see how the highlighting functions can be overridden to provide new functionality.</p>
+        <table class="table table-condensed" id="demo5">
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>hello.png</td>
+                <td>Portable Networks Graphic image</td>
+                <td>Friday, 24 July 2013 4:59PM</td>
+            </tr>
+        </table>
+
+            <pre>$(function() {
+    $('#demo5').finderSelect({children:'tr'});
+
+    $("#demo5 tr").dblclick(function() {
+        alert( "Double Click detected. Useful for linking to detail page." ); // Enable double click
+    });
+
+    $.fn.finderSelect.highlight = function(el, cssClass) {
+        el.addClass(cssClass);
+        el.find('input').prop('checked', true); // Add functionality to check checkboxes inside selected rows
+
+    };
+
+    $.fn.finderSelect.unHighlight = function(el,cssClass) {
+        el.removeClass(cssClass);
+        el.find('input').prop('checked', false); // Add functionality to uncheck checkboxes inside unselected rows
+    };
+
+});</pre>
+    </div>
+    <div class="col-lg-12">
         <h2>TBODY Only</h2>
         <p>To enable selecting on only tbody rows simply call</p>
         <table class="table" id="demo2">
@@ -361,6 +429,23 @@
         $('#demo2').find('tbody').finderSelect();
         $('#demo3').find('tbody').finderSelect({selectClass:"warning"});
         $('#demo4').finderSelect({selectClass:'label-success'});
+
+        $("#demo5 tr").dblclick(function() {
+            alert( "Double Click detected. Useful for linking to detail page." );
+        });
+
+        $.fn.finderSelect.highlight = function(el, cssClass) {
+            el.addClass(cssClass);
+            el.find('input').prop('checked', true); // Add functionality to check checkboxes inside selected rows
+
+        };
+
+        $.fn.finderSelect.unHighlight = function(el,cssClass) {
+            el.removeClass(cssClass);
+            el.find('input').prop('checked', false); // Add functionality to check checkboxes inside selected rows
+        };
+
+        $('#demo5').finderSelect({children:"tr"});
     });
 </script>
 </body>
