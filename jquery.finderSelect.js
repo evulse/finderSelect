@@ -61,12 +61,16 @@
 
         var options = {
             class: 'selected',
-            children: 'tr',
+            children: false,
             event: 'mousedown',
             cursor: 'pointer'
         };
 
         $.extend(options, user);
+
+        if(options.children === false) {
+            options.children = $(this).children().get(0).tagName;
+        }
 
         $(this).finderSelectDisableSelection();
 
