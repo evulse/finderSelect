@@ -15,7 +15,7 @@
         "file explorer",
         "row"
     ],
-    "version": "0.1.5",
+    "version": "0.1.6",
     "author": {
         "name": "Mike Angell",
         "email": "mike@evulse.com"
@@ -29,13 +29,13 @@
     "licenses": [
         {
             "type": "MIT",
-            "url": "http://github.com/evulse/finderselect/LICENSE.txt"
+            "url": "http://github.com/evulse/finderSelect/LICENSE.txt"
         }
     ],
-    "bugs": "http://github.com/evulse/finderselect/issues",
-    "homepage": "http://github.com/evulse/finderselect",
-    "docs": "http://github.com/evulse/finderselect",
-    "demo": "http://evulse.github.io/finderselect",
+    "bugs": "http://github.com/evulse/finderSelect/issues",
+    "homepage": "http://github.com/evulse/finderSelect",
+    "docs": "http://github.com/evulse/finderSelect",
+    "demo": "http://evulse.github.io/finderSelect",
     "dependencies": {
         "jquery": ">=1.8"
     }

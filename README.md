@@ -52,5 +52,5 @@ This can be used to show total selected items
 
 
 ## Live Demos
-*    [Basic Demo](http://evulse.github.io/bulkselect "jQuery finderSelect - Demo")
+*    [Basic Demo](http://evulse.github.io/finderSelect "jQuery finderSelect - Demo")
 
