@@ -79,10 +79,14 @@
         var parent = $(this);
         parent.data('down', false);
 
-        parent.mousedown(function() {
-            parent.data('down', true);
-        }).mouseup(function() {
-                parent.data('down', false);
+        parent.mousedown(function(e) {
+            if(e.which == 1) {
+                parent.data('down', true);
+            }
+        }).mouseup(function(e) {
+                if(e.which == 1) {
+                    parent.data('down', false);
+                }
             });
 
         $(this).on('mouseenter', options.children, function(e){
@@ -93,83 +97,85 @@
         });
 
         $(this).on(options.event, options.children, function(e){
-            var selected = $(this);
-            var last = parent.data('finderSelectPrimary');
-            var shift = parent.data('finderSelectSecondary');
-            var siblings = parent.find(options.children);
-            var clicked = siblings.index(this);
-            var next = siblings.index(siblings.eq(last).nextAll('.'+options.class).first());
-            if(!siblings.eq(last).finderSelectHighlighted(options.class)) {
-                last = next;
-            }
-
-
-            if (e.shiftKey) {
-                if(last == null) { last = 0;}
-                if(shift != null) {
-                    selected.finderSelectHighlight(options.class);
-
-                    if(last < shift && last < clicked && clicked > shift) {
-                        siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
-                    }
-                    if(last < shift && last < clicked && clicked < shift) {
-                        siblings.eq(shift).finderSelectUnHighlight(options.class);
-                        siblings.finderSelectBetween(shift, clicked).finderSelectUnHighlight(options.class);
-                    }
-                    if(last < shift && last > clicked && clicked < shift) {
-                        siblings.eq(shift).finderSelectUnHighlight(options.class);
-                        siblings.finderSelectBetween(shift, last).finderSelectUnHighlight(options.class);
-                        siblings.finderSelectBetween(clicked, last).finderSelectHighlight(options.class);
-                    }
-                    if(last > shift && last < clicked && clicked > shift) {
-                        siblings.eq(shift).finderSelectUnHighlight(options.class);
-                        siblings.finderSelectBetween(shift, last).finderSelectUnHighlight(options.class);
-                        siblings.finderSelectBetween(clicked, last).finderSelectHighlight(options.class);
-                    }
-                    if(last > shift && last > clicked && clicked > shift) {
-                        siblings.eq(shift).finderSelectUnHighlight(options.class);
-                        siblings.finderSelectBetween(shift, clicked).finderSelectUnHighlight(options.class);
-                    }
-                    if(last > shift && last > clicked && clicked < shift) {
-                        siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
-                    }
-
-                    if(last == shift && shift > clicked) {
-                        siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
-                    }
-
-                    if(last == shift && shift < clicked) {
-                        siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
-                    }
-
-                } else {
-
-                    siblings.finderSelectBetween(clicked, last).finderSelectHighlight(options.class);
-
-                    selected.finderSelectHighlight(options.class);
+            if(e.which == 1) {
+                var selected = $(this);
+                var last = parent.data('finderSelectPrimary');
+                var shift = parent.data('finderSelectSecondary');
+                var siblings = parent.find(options.children);
+                var clicked = siblings.index(this);
+                var next = siblings.index(siblings.eq(last).nextAll('.'+options.class).first());
+                if(!siblings.eq(last).finderSelectHighlighted(options.class)) {
+                    last = next;
                 }
-                parent.data('finderSelectPrimary', last);
-                parent.data('finderSelectSecondary', clicked);
-            } else {
-                if (e.ctrlKey || e.metaKey) {
-                    if(selected.finderSelectHighlighted(options.class)) {
-                        selected.finderSelectUnHighlight(options.class);
-                        parent.data('finderSelectPrimary', clicked)
-                        parent.data('finderSelectSecondary', null);
+
+
+                if (e.shiftKey) {
+                    if(last == null) { last = 0;}
+                    if(shift != null) {
+                        selected.finderSelectHighlight(options.class);
+
+                        if(last < shift && last < clicked && clicked > shift) {
+                            siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
+                        }
+                        if(last < shift && last < clicked && clicked < shift) {
+                            siblings.eq(shift).finderSelectUnHighlight(options.class);
+                            siblings.finderSelectBetween(shift, clicked).finderSelectUnHighlight(options.class);
+                        }
+                        if(last < shift && last > clicked && clicked < shift) {
+                            siblings.eq(shift).finderSelectUnHighlight(options.class);
+                            siblings.finderSelectBetween(shift, last).finderSelectUnHighlight(options.class);
+                            siblings.finderSelectBetween(clicked, last).finderSelectHighlight(options.class);
+                        }
+                        if(last > shift && last < clicked && clicked > shift) {
+                            siblings.eq(shift).finderSelectUnHighlight(options.class);
+                            siblings.finderSelectBetween(shift, last).finderSelectUnHighlight(options.class);
+                            siblings.finderSelectBetween(clicked, last).finderSelectHighlight(options.class);
+                        }
+                        if(last > shift && last > clicked && clicked > shift) {
+                            siblings.eq(shift).finderSelectUnHighlight(options.class);
+                            siblings.finderSelectBetween(shift, clicked).finderSelectUnHighlight(options.class);
+                        }
+                        if(last > shift && last > clicked && clicked < shift) {
+                            siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
+                        }
+
+                        if(last == shift && shift > clicked) {
+                            siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
+                        }
+
+                        if(last == shift && shift < clicked) {
+                            siblings.finderSelectBetween(shift, clicked).finderSelectHighlight(options.class);
+                        }
+
                     } else {
+
+                        siblings.finderSelectBetween(clicked, last).finderSelectHighlight(options.class);
+
+                        selected.finderSelectHighlight(options.class);
+                    }
+                    parent.data('finderSelectPrimary', last);
+                    parent.data('finderSelectSecondary', clicked);
+                } else {
+                    if (e.ctrlKey || e.metaKey) {
+                        if(selected.finderSelectHighlighted(options.class)) {
+                            selected.finderSelectUnHighlight(options.class);
+                            parent.data('finderSelectPrimary', clicked)
+                            parent.data('finderSelectSecondary', null);
+                        } else {
+                            selected.finderSelectHighlight(options.class);
+                            parent.data('finderSelectPrimary', clicked)
+                            parent.data('finderSelectSecondary', null);
+                        }
+
+                    } else {
+                        siblings.finderSelectUnHighlight(options.class);
                         selected.finderSelectHighlight(options.class);
                         parent.data('finderSelectPrimary', clicked)
-                        parent.data('finderSelectSecondary', null);
+                        parent.data('finderSelectSecondary', null)
                     }
-
-                } else {
-                    siblings.finderSelectUnHighlight(options.class);
-                    selected.finderSelectHighlight(options.class);
-                    parent.data('finderSelectPrimary', clicked)
-                    parent.data('finderSelectSecondary', null)
                 }
+                parent.trigger('finderSelectUpdate');
             }
-            parent.trigger('finderSelectUpdate');
         });
     };
 }( jQuery ));
