@@ -43,6 +43,7 @@ This can be used to show total selected items
 
 ## Change Log
 
+*    0.2.0: Refactor code base to make core plugin easily extendable.
 *    0.1.9: Make plugin only work on left click so that a custom context menu can be used.
 *    0.1.7: Auto detect child element type if none specified.
 *    0.1.5: Add "finderSelectUpdate" event so external code can be aware of updates.
