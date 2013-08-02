@@ -14,19 +14,30 @@ If you do not want to allow selecting of headers and footers use
 
 If you want to use a custom class for highlighting such as using Twitter Bootstrap
 
-    $('table tbody').finderSelect({class:'warning'}); // Will Highlight Yellow in Twitter Bootstrap 3 RC1
+    $('table tbody').finderSelect({selectClass:'warning'}); // Will Highlight Yellow in Twitter Bootstrap 3 RC1
 
 To allow finderSelect to work on other children elements other than tr specify the children setting.
 
-    $('div').finderSelect({class:'label-success',children:'span'});
+    $('div').finderSelect({selectClass:'label-success',children:'span'});
 
 All available settings
 
     var options = {
-        class: 'selected',
-        children: 'tr',
-        event: 'click',
-        cursor: 'pointer'
+        selectClass: "selected",
+        children: false,
+        event: "mousedown",
+        cursor: "pointer",
+        dragEvent: "mouseenter",
+        enableClickDrag: true,
+        enableShiftClick: true,
+        enableCtrlClick: true,
+        enableSingleClick: true,
+        enableDisableSelection: true,
+        totalSelector: false,
+        menuSelector: false,
+        menuXOffset: 0,
+        menuYOffset: 0
+
     };
 
 Also the following event is omitted whenever an update occurs.
@@ -35,7 +46,7 @@ Also the following event is omitted whenever an update occurs.
 
 This can be used to show total selected items
 
-    $('.table-select tbody').finderSelect({class:'warning'});
+    $('.table-select tbody').finderSelect({selectClass:'warning'});
 
     $(".table-select tbody").on("finderSelectUpdate", function(event){
         $('.selected-count').html($(this).find('tr.warning').length)
@@ -43,6 +54,7 @@ This can be used to show total selected items
 
 ## Change Log
 
+*    0.2.2: Make IE6+ Compatible required renaming option 'class' to 'selectClass'
 *    0.2.1: Bring Menu and Highlight count from example into the core system.
 *    0.2.0: Refactor code base to make core plugin easily extendable.
 *    0.1.9: Make plugin only work on left click so that a custom context menu can be used.

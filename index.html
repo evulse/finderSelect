@@ -45,6 +45,7 @@
                 allowtransparency="true" frameborder="0" scrolling="0" width="130" height="30"></iframe>
         <iframe src="http://ghbtns.com/github-btn.html?user=evulse&repo=finderSelect&type=follow&count=true&size=large"
                 allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+        <h3>Tested on IE6+, Firefox, Safari & Chrome. <small>Single click only on touch devices.</small></h3>
     </div>
 
         <div class="col-lg-12">
@@ -303,7 +304,7 @@
             </tbody>
         </table>
             <pre>$(function() {
-    $('#demo3').find('tbody').finderSelect({class:'warning'});
+    $('#demo3').find('tbody').finderSelect({selectClass:'warning'});
 });</pre>
     </div>
     <div class="col-lg-12">
@@ -325,7 +326,7 @@
     </div>
         <p></p>
             <pre>$(function() {
-     $('#demo4').finderSelect({class:'label-success'});
+     $('#demo4').finderSelect({selectClass:'label-success'});
 });</pre>
     </div>
 
@@ -350,7 +351,7 @@
 <script src="jquery.finderSelect.js"></script>
 <script>
     $(function() {
-        $('#demo1').finderSelect({children:'tr',totalSelector:'.demo1-count',menuSelector:'#demo1-menu'});
+        $('#demo1').finderSelect({children:"tr",totalSelector:".demo1-count",menuSelector:"#demo1-menu"});
 
         $(".demo1-trash").click(function(){
             $('#demo1').find('tr.selected').remove();
@@ -358,8 +359,8 @@
         });
 
         $('#demo2').find('tbody').finderSelect();
-        $('#demo3').find('tbody').finderSelect({class:'warning'});
-        $('#demo4').finderSelect({class:'label-success'});
+        $('#demo3').find('tbody').finderSelect({selectClass:"warning"});
+        $('#demo4').finderSelect({selectClass:'label-success'});
     });
 </script>
 </body>
