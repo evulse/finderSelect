@@ -1,0 +1,42 @@
+{
+    "name": "finderselect",
+    "title": "jQuery finderSelect",
+    "description": "jQuery Plugin for matching file explorer functions making child elements selectable supports Ctrl+Click, Command+Click, Ctrl+Drag, Command+Drag and Shift+Click.",
+    "keywords": [
+        "select",
+        "table",
+        "selectable",
+        "highlight",
+        "tr",
+        "click",
+        "finder",
+        "windows explorer",
+        "file manager",
+        "file explorer",
+        "row"
+    ],
+    "version": "0.1.4",
+    "author": {
+        "name": "Mike Angell",
+        "email": "mike@evulse.com"
+    },
+    "maintainers": [
+        {
+            "name": "Mike Angell",
+            "email": "mike@evulse.com"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://github.com/evulse/finderselect/LICENSE.txt"
+        }
+    ],
+    "bugs": "http://github.com/evulse/finderselect/issues",
+    "homepage": "http://github.com/evulse/finderselect",
+    "docs": "http://github.com/evulse/finderselect",
+    "demo": "http://evulse.github.io/finderselect",
+    "dependencies": {
+        "jquery": ">=1.8"
+    }
+}
