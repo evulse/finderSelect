@@ -267,13 +267,14 @@
 
             } else {
                 $.fn.finderSelect.unHighlight(siblings.eq(shift), options.selectClass);
+                if(clicked > shift) {
+                    $.fn.finderSelect.unHighlight(siblings.eq(shift).prevUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
+                } else {
+                    $.fn.finderSelect.unHighlight(siblings.eq(shift).nextUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
+                }
             }
 
-            if(clicked > shift) {
-                $.fn.finderSelect.unHighlight(siblings.eq(shift).prevUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
-            } else {
-                $.fn.finderSelect.unHighlight(siblings.eq(shift).nextUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
-            }
+
 
         } else {
             if(last < clicked) {
