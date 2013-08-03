@@ -17,6 +17,7 @@
             background-color: #3875d7;
             color: #FFF;
         }
+        tr::-moz-selection { color: inherit;  background: transparent; }
     </style>
 
     <script>
@@ -275,6 +276,10 @@
         el.find('input').prop('checked', false); // Add functionality to uncheck checkboxes inside unselected rows
     };
 
+    $("#demo5 tr input").click(function(e) {
+        e.preventDefault();
+    });
+
 });</pre>
     </div>
     <div class="col-lg-12">
@@ -444,6 +449,10 @@
             el.removeClass(cssClass);
             el.find('input').prop('checked', false); // Add functionality to check checkboxes inside selected rows
         };
+
+        $("#demo5 tr input").click(function(e) {
+            e.preventDefault();
+        });
 
         $('#demo5').finderSelect({children:"tr"});
     });

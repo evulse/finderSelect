@@ -33,6 +33,7 @@ All available settings
         enableCtrlClick: true,
         enableSingleClick: true,
         enableDisableSelection: true,
+        enableTouchCtrlDefault: true,
         totalSelector: false,
         menuSelector: false,
         menuXOffset: 0,
@@ -54,6 +55,9 @@ This can be used to show total selected items
 
 ## Change Log
 
+*    0.3.0: Touch devices will now default to Ctrl + Click functionality allowing them to make multiple selections.
+*    0.3.0: Firefox will now auto scroll when using Ctrl + Click + Drag
+*    0.3.0: Rewrite Ctrl + Click + Drag functionality which now also allows text selection on all rows.
 *    0.2.2: Make IE6+ Compatible required renaming option 'class' to 'selectClass'
 *    0.2.1: Bring Menu and Highlight count from example into the core system.
 *    0.2.0: Refactor code base to make core plugin easily extendable.
