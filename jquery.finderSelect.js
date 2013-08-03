@@ -200,7 +200,7 @@
                     $.fn.finderSelect.setPrimary(parent, last);
                     $.fn.finderSelect.setSecondary(parent, clicked);
                 } else {
-                    if (($.fn.finderSelect.detectCtrl(e) && options.enableCtrlClick) || ($.fn.finderSelect.isTouchDevice && options.enableTouchCtrlDefault)) {
+                    if (($.fn.finderSelect.detectCtrl(e) && options.enableCtrlClick) || ($.fn.finderSelect.isTouchDevice() && options.enableTouchCtrlDefault)) {
 
                         if($.fn.finderSelect.isHighlighted(selected, options.selectClass)) {
                             $.fn.finderSelect.unHighlight(selected, options.selectClass);
