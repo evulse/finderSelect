@@ -126,7 +126,7 @@
         });
 
         function turnOffSelection() {
-                return false;
+            return false;
         }
     };
 
@@ -158,14 +158,15 @@
         parent.on(options.dragEvent, options.children, function(e){
             var siblings = parent.find(options.children);
             var first = $.fn.finderSelect.getPrimary(parent);
-            var last = $.fn.finderSelect.getSecondary(parent);
+            var last = $.fn.finderSelect.getTertiary(parent);
             var clicked = siblings.index(this);
             var selected = $(this);
             if ($.fn.finderSelect.getMouseDown() && $.fn.finderSelect.detectCtrl(e)) {
 
                 $.fn.finderSelect.ctrlSelection(siblings, selected, first, last, clicked, options);
                 $.fn.finderSelect.setPrimary(parent, first);
-                $.fn.finderSelect.setSecondary(parent, clicked);
+                $.fn.finderSelect.setSecondary(parent, null);
+                $.fn.finderSelect.setTertiary(parent, clicked);
                 $.fn.finderSelect.triggerUpdate(parent);
             }
         });
@@ -219,6 +220,7 @@
                 }
 
                 $.fn.finderSelect.triggerUpdate(parent);
+                $.fn.finderSelect.setTertiary(parent, null);
             }
         });
 
@@ -253,19 +255,36 @@
         if(shift != null) {
             if((last < shift && last < clicked && clicked < shift) || (last > shift && last > clicked && clicked > shift)) {
                 $.fn.finderSelect.unHighlight($.fn.finderSelect.between(siblings, shift, clicked), options.selectClass);
+
             }
             if((last < shift && last > clicked && clicked < shift) || (last > shift && last < clicked && clicked > shift)) {
                 $.fn.finderSelect.unHighlight($.fn.finderSelect.between(siblings, shift, last), options.selectClass);
                 $.fn.finderSelect.highlight($.fn.finderSelect.between(siblings, clicked, last), options.selectClass);
+
             }
             if((last > shift && last > clicked && clicked < shift) || (last < shift && last < clicked && clicked > shift) || (last == shift)) {
                 $.fn.finderSelect.highlight($.fn.finderSelect.between(siblings, shift, clicked), options.selectClass);
+
             } else {
                 $.fn.finderSelect.unHighlight(siblings.eq(shift), options.selectClass);
             }
+
+            if(clicked > shift) {
+                $.fn.finderSelect.unHighlight(siblings.eq(shift).prevUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
+            } else {
+                $.fn.finderSelect.unHighlight(siblings.eq(shift).nextUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
+            }
+
         } else {
+            if(last < clicked) {
+                $.fn.finderSelect.unHighlight(siblings.eq(last).prevUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
+            } else {
+                $.fn.finderSelect.unHighlight(siblings.eq(last).nextUntil(options.children+':not(.'+options.selectClass+')'), options.selectClass);
+            }
+
             $.fn.finderSelect.highlight($.fn.finderSelect.between(siblings, clicked, last), options.selectClass);
         }
+
         $.fn.finderSelect.highlight(selected, options.selectClass);
 
 
@@ -299,6 +318,14 @@
         return el.data('finderSelectPrimary');
     }
 
+    $.fn.finderSelect.setTertiary = function(el,value) {
+        return el.data('finderSelectTertiary', value);
+    }
+
+    $.fn.finderSelect.getTertiary = function(el) {
+        return el.data('finderSelectTertiary');
+    }
+
     $.fn.finderSelect.triggerUpdate = function(el) {
         return el.trigger('finderSelectUpdate');
     }
@@ -318,7 +345,6 @@
         });
 
         return el;
-
     };
 
     $.fn.finderSelect.loadMenu = function(el, options) {
@@ -335,9 +361,5 @@
         });
 
         return el;
-
     };
-
-
-
 }( jQuery ));

@@ -55,6 +55,7 @@ This can be used to show total selected items
 
 ## Change Log
 
+*    0.4.0: Matched to Mac OSX Finder 100%. Added support for when a selection touches a pre-existing selection and then is moved.
 *    0.3.0: Touch devices will now default to Ctrl + Click functionality allowing them to make multiple selections.
 *    0.3.0: Firefox will now auto scroll when using Ctrl + Click + Drag
 *    0.3.0: Rewrite Ctrl + Click + Drag functionality which now also allows text selection on all rows.
