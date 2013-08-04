@@ -156,13 +156,16 @@
             });
 
         parent.on(options.dragEvent, options.children, function(e){
+
             var siblings = parent.find(options.children);
             var first = $.fn.finderSelect.getPrimary(parent);
             var last = $.fn.finderSelect.getTertiary(parent);
             var clicked = siblings.index(this);
             var selected = $(this);
             if ($.fn.finderSelect.getMouseDown() && $.fn.finderSelect.detectCtrl(e)) {
-
+                if(options.enableDisableSelection) {
+                    $.fn.finderSelect.deleteSelection();
+                }
                 $.fn.finderSelect.ctrlSelection(siblings, selected, first, last, clicked, options);
                 $.fn.finderSelect.setPrimary(parent, first);
                 $.fn.finderSelect.setSecondary(parent, null);
