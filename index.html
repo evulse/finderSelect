@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>jQuery finderSelect</title>
+    <title>finderSelect</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
@@ -37,8 +37,8 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1>jQuery finderSelect</h1>
-        <p class="lead">Provides the ability to add file manager (Finder) type highlighting to all elements based on the standard single click, command+click/ctrl+click, command+drag/ctrl+drag and shift+click methods. This plugin will by default add a `selected` class to all clicked elements.</p>
+        <h1>finderSelect <small> jQuery & Zepto Plugin. Only 6kb minified.</small></h1>
+        <p class="lead">Provides the ability to add file manager (Finder) type highlighting to all elements based on the standard single click, command+click/ctrl+click, command+drag/ctrl+drag, command+A/ctrl+A and shift+click methods. This plugin will by default add a `selected` class to all clicked elements.</p>
         <p><a class="btn btn-large btn-success" href="http://github.com/evulse/finderSelect">View on Github</a></p>
         <iframe src="http://ghbtns.com/github-btn.html?user=evulse&repo=finderSelect&type=watch&count=true&size=large"
                 allowtransparency="true" frameborder="0" scrolling="0" width="130" height="30"></iframe>
@@ -51,7 +51,7 @@
 
         <div class="col-lg-12">
             <h2>Advanced Usage</h2>
-            <p>This advanced demo shows how finderSelect can be used as a component to create a file explorer. Make sure to try Ctrl/Cmd+Click, Shift+Click, Ctrl/Cmd+Click&Drag and Right Click on the table after you have made a selection.</p>
+            <p>This advanced demo shows how finderSelect can be used as a component to create a file explorer. Make sure to try Ctrl/Cmd+Click, Ctrl+A/Cmd+A & Ctrl+Alt+A/Cmd+Opt+A (Activates only when cursor is over table), Shift+Click, Ctrl/Cmd+Click&Drag and Right Click on the table after you have made a selection.</p>
             <table class="table table-condensed" id="demo1">
                 <tr>
                     <td><i class="icon-file"></i></td>
@@ -265,15 +265,15 @@
         alert( "Double Click detected. Useful for linking to detail page." ); // Enable double click
     });
 
-    $.fn.finderSelect.highlight = function(el, cssClass) {
-        el.addClass(cssClass);
+    $.fn.finderSelect.h.on =  function(el, o) {
+        el.removeClass(o.unSelectClass);
+        el.addClass(o.selectClass);
         el.find('input').prop('checked', true); // Add functionality to check checkboxes inside selected rows
-
     };
-
-    $.fn.finderSelect.unHighlight = function(el,cssClass) {
-        el.removeClass(cssClass);
-        el.find('input').prop('checked', false); // Add functionality to uncheck checkboxes inside unselected rows
+    $.fn.finderSelect.h.off =  function(el,o) {
+        el.removeClass(o.selectClass);
+        el.addClass(o.unSelectClass);
+        el.find('input').prop('checked', false); // Add functionality to check checkboxes inside selected rows
     };
 
     $("#demo5 tr input").click(function(e) {
@@ -421,6 +421,7 @@
     <li><a class="demo1-trash">Trash <span class="demo1-count">0</span> File(s)</a></li>
 </ul>
 <script src="http://code.jquery.com/jquery.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>-->
 <script src="jquery.finderSelect.js"></script>
 <script>
     $(function() {
@@ -439,14 +440,14 @@
             alert( "Double Click detected. Useful for linking to detail page." );
         });
 
-        $.fn.finderSelect.highlight = function(el, cssClass) {
-            el.addClass(cssClass);
+        $.fn.finderSelect.h.on =  function(el, o) {
+            el.removeClass(o.unSelectClass);
+            el.addClass(o.selectClass);
             el.find('input').prop('checked', true); // Add functionality to check checkboxes inside selected rows
-
         };
-
-        $.fn.finderSelect.unHighlight = function(el,cssClass) {
-            el.removeClass(cssClass);
+        $.fn.finderSelect.h.off =  function(el,o) {
+            el.removeClass(o.selectClass);
+            el.addClass(o.unSelectClass);
             el.find('input').prop('checked', false); // Add functionality to check checkboxes inside selected rows
         };
 

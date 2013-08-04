@@ -1,6 +1,6 @@
-# jQuery finderSelect
+# finderSelect | Jquery & Zepto Plugin
 
-[jQuery finderSelect](http://github.com/evulse/finderselect) Adds the ability to highlight table rows based on the standard single click, command/ctrl+click, command+drag/ctrl+drag and shift+click methods. This plugin will add a `selected` class to all active rows.
+[finderSelect](http://github.com/evulse/finderselect) Adds the ability to highlight table rows based on the standard single click, command/ctrl+click, command+drag/ctrl+drag and shift+click methods. This plugin will add a `selected` class to all active rows.
 
 ## How to Use
 
@@ -55,6 +55,7 @@ This can be used to show total selected items
 
 ## Change Log
 
+*    0.5.0: Added Ctrl+A/Cmd+A Select All feature. Rewrote core to work with Zepto without plugins. System now stores data as classes.
 *    0.4.0: Matched to Mac OSX Finder 100%. Added support for when a selection touches a pre-existing selection and then is moved.
 *    0.3.0: Touch devices will now default to Ctrl + Click functionality allowing them to make multiple selections.
 *    0.3.0: Firefox will now auto scroll when using Ctrl + Click + Drag
@@ -73,5 +74,5 @@ This can be used to show total selected items
 
 
 ## Live Demos
-*    [Basic Demo](http://evulse.github.io/finderSelect "jQuery finderSelect - Demo")
+*    [Basic Demo](http://evulse.github.io/finderSelect "finderSelect - Demo")
 
