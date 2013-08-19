@@ -14,10 +14,38 @@
     var d = $(document);
     var b = $('body');
 
-    var f = $.fn.finderSelect = function(options) {
+    var commands = {
+        highlight: highlight,
+        unHighlight: unHighlight,
+        highlightAll: highlightAll,
+        unHighlightAll: unHighlightAll,
+        selected: selected,
+        children: children,
+        update: update,
+        addHook: addHook
+    };
+
+    var hooks = {};
+
+    var o = {};
+
+    var f = $.fn.finderSelect = function() {
+        if (typeof arguments[0] === 'string') {
+            var args = Array.prototype.slice.call(arguments);
+            args.splice(0, 1);
+            return commands[arguments[0]].apply(this, args);
+        }
+        else {
+            finderSelect.apply(this, arguments);
+            return this;
+        }
+        
+    };
+
+    function finderSelect(opt) {
 
         var p = $(this);
-        var o = {
+        var options = {
             selectClass: "selected",
             unSelectClass: "un-selected",
             currentClass: "selected-current",
@@ -36,6 +64,7 @@
             enableSelectAll: true,
             enableDisableSelection: true,
             enableTouchCtrlDefault: true,
+            enableDesktopCtrlDefault: false,
             totalSelector: false,
             menuSelector: false,
             menuXOffset: 0,
@@ -43,7 +72,9 @@
 
         };
 
-        $.extend(o, options);
+        $.extend(options, opt);
+        
+        o = options;
 
         if(!o.children) {
             o.children = f.detect.children(p);
@@ -73,6 +104,50 @@
             f.core.loadMenu(p,o);
         }
     };
+    
+    function highlight(el) {
+        f.h.on(el, o);
+    }
+    function unHighlight(el) {
+        f.h.off(el, o);
+    }
+    function highlightAll() {
+        var p = $(this);
+        f.h.on(p.find(o.children), o);
+    }
+    function unHighlightAll() {
+        var p = $(this);
+        f.h.off(p.find(o.children), o);
+    }
+    function selected() {
+        var p = $(this);
+        return p.find(o.children+'.'+o.selectClass);
+    }
+    function children() {
+        var p = $(this);
+        return p.find(o.children);
+    }
+    function update() {
+        var p = $(this);
+        f.t.update(p, o);
+    }
+    function addHook(hookName, fn) {
+                if(typeof hookName == "object"){
+                    var i;
+                    for(i=0; i<hookName.length; i++){
+                        var theHook = hookName[i];
+                        if(!hooks[theHook]){
+                            hooks[theHook] = [];
+                        }
+                        hooks[theHook].push(fn);
+                    }
+                } else {
+                    if(!hooks[hookName]){
+                        hooks[hookName] = [];
+                    }
+                    hooks[hookName].push(fn);
+                }
+    }
 
     f.core = {
         clickDrag: function(p,o) {
@@ -89,7 +164,6 @@
                 if (f.get.mouseDown() && f.detect.ctrl(e)) {
                     f.t.deleteSelection(o);
                     f.t.toggleDrag(p,c,o);
-                    f.set.clicks(c.hard.v, null, c.current.v, p, o);
                 }
             });
 
@@ -103,26 +177,23 @@
                     if (!(f.detect.ctrl(e) && o.enableCtrlClick) && (f.detect.shift(e) && o.enableShiftClick)) {
                         f.t.deleteSelection(o);
                         f.t.shiftClick(p,c,o);
-                        f.set.clicks(c.hard.v, c.current.v, null, p, o);
                     }
 
-                    if (((f.detect.ctrl(e) && o.enableCtrlClick) || (f.detect.touch() && o.enableTouchCtrlDefault)) && !(f.detect.shift(e) && o.enableShiftClick)) {
+                    if (((f.detect.ctrl(e) && o.enableCtrlClick) || (f.detect.touch() && o.enableTouchCtrlDefault) || o.enableDesktopCtrlDefault) && !(f.detect.shift(e) && o.enableShiftClick)) {
                         f.t.toggleClick(p,c,o);
-                        f.set.clicks(c.current.v, null, null, p, o);
                     }
 
-                    if (!(f.detect.ctrl(e) && o.enableCtrlClick) && !(f.detect.shift(e) && o.enableShiftClick) && o.enableSingleClick) {
+                    if (!(f.detect.ctrl(e) && o.enableCtrlClick) && !(f.detect.shift(e) && o.enableShiftClick) && o.enableSingleClick && !o.enableDesktopCtrlDefault) {
                         f.t.singleClick(p,c,o);
-                        f.set.clicks(c.current.v, null, null, p, o);
                     }
                 }
             });
         },
         selectAll: function(p,o) {
-            p.on('mouseenter', function(){
+            p.on('mouseover', function(){
                 d.on("keydown", turnOff);
             });
-            p.on('mouseleave', function(){
+            p.on('mouseout', function(){
                 d.off("keydown", turnOff);
             });
 
@@ -150,21 +221,21 @@
                 $(o.menuSelector).css({left:(e.pageX+o.menuXOffset),top:(e.pageY+o.menuYOffset)}).show();
                 return false;
             }).bind("mousedown",function(){
-                $(o.menuSelector).hide();
-            });
+                    $(o.menuSelector).hide();
+                });
             $(o.menuSelector).bind("click",function(){
                 $(this).hide();
             });
         },
         disableSelection: function(p, o) {
-            b.on('keydown', function(){
-                p.on("selectstart", o.children, turnOffSelection);
+            d.on('keydown', function(){
+                p.on("selectstart", turnOffSelection);
             }).on('keyup', function(){
-                p.off("selectstart", o.children, turnOffSelection);
-            });
+                    p.off("selectstart", turnOffSelection);
+                });
 
-            function turnOffSelection() {
-                return false;
+            function turnOffSelection(e) {
+                e.preventDefault();
             }
         }
     };
@@ -172,19 +243,52 @@
 
     f.h = {
         on: function(el, o) {
+            f.get.hook('highlight:before', [el, o]);
             el.removeClass(o.unSelectClass);
             el.addClass(o.selectClass);
+            f.get.hook('highlight:after', [el, o]);
         },
         off: function(el,o) {
+            f.get.hook('unHighlight:before', [el, o]);
             el.removeClass(o.selectClass);
             el.addClass(o.unSelectClass);
+            f.get.hook('unHighlight:after', [el, o]);
         },
         tog: function(el,o) {
-            if(f.detect.h(el, o)) {
-                f.h.off(el, o);
-            } else {
-                f.h.on(el, o);
-            }
+
+            el.each(function () {
+                var child = $(this);
+                if(f.detect.h(child, o)) {
+                    f.h.off(child, o);
+                } else {
+                    f.h.on(child, o);
+                }
+            });
+        },
+        reset: function(el,o) {
+            el.each(function () {
+                var child = $(this);
+                if(f.detect.lastH(child, o)) {
+                    f.h.on(child, o);
+                } else {
+                    f.h.off(child, o);
+                }
+            });
+ 
+        },
+        state: function(el,o) {
+            el.each(function () {
+                var child = $(this);
+                if(f.detect.h(child, o)) {
+                    child.removeClass('stateUnSelected');
+                    child.addClass('stateSelected');
+                } else {
+                    child.removeClass('stateSelected');
+                    child.addClass('stateUnSelected');
+
+                }
+            });
+            
         }
     };
 
@@ -203,6 +307,9 @@
         },
         h: function(el,o) {
             return el.hasClass(o.selectClass);
+        },
+        lastH: function(el,o) {
+            return el.hasClass('stateSelected');
         },
         touch: function() {
             return !!('ontouchstart' in window) // works on most browsers
@@ -265,15 +372,24 @@
             var $els = [], $el = (d) ? el.next() : el.prev();
             while( $el.length ) {
                 if(typeof u === 'undefined' || !u || !$el.hasClass(u)) {
-                if(typeof s === 'undefined' || !s || $el.hasClass(s)) {
-                    $els.push($el[0]);
-                }
+                    if(typeof s === 'undefined' || !s || $el.hasClass(s)) {
+                        $els.push($el[0]);
+                    }
                     $el = (d) ? $el.next() : $el.prev();
                 } else {
                     $el = {};
                 }
             }
             return $($els)
+        },
+        hook: function(hookName, data){
+            var hooked = hooks[hookName]
+
+            if(hooked){
+                    for(i=0; i<hooked.length; i++){
+                        hooked[i].apply(undefined, data);
+                    }
+            }
         }
 
     };
@@ -296,31 +412,23 @@
             var s = f.get.siblings(p,o);
             f.h.off(s, o);
             f.h.on(c.current.v, o);
+            f.set.clicks(c.current.v, null, null, p, o);
         },
         toggleClick: function(p,c,o) {
+            var s = f.get.siblings(p,o);
             f.h.tog(c.current.v, o);
+            f.h.state(s,o);      
+            f.set.clicks(c.current.v, null, null, p, o);
         },
         toggleDrag: function(p,c,o) {
             var s = f.get.siblings(p,o);
-            var x = s.index(c.hard.v);
-            var y = s.index(c.ctrl.v);
-            var z = s.index(c.current.v);
-
-
-            if(c.ctrl.v.length != 0) {
-                if((z >= x && z < y) || (z <= x && z > y)) {
-                    f.h.tog(c.ctrl.v, o);
-                } else {
-                    f.h.tog(c.current.v, o);
-                }
-                f.h.tog(f.get.between(s, c.current, c.ctrl), o);
-            } else {
-                if(c.current.v != c.hard.v) {
-                    f.h.tog(f.get.between(s, c.current, c.hard), o);
-                }
-
+            f.h.reset(s,o);
+            if(s.index(c.current.v) != s.index(c.hard.v)) {
+                f.h.tog(f.get.between(s, c.current, c.hard), o);                       
                 f.h.tog(c.current.v, o);
             }
+            f.set.clicks(c.hard.v, null, null, p, o);
+
         },
         shiftClick: function(p, c, o) {
             var s = f.get.siblings(p,o);
@@ -334,9 +442,9 @@
                 } else {
                     var start = f.get.elem(z < x, c.hard.v, o.selectClass);
                     if(start.length > 0) {
-                    start = (z > x ) ? $(start[0]) : $(start[start.length-1]);
-                    c.hard.v = start;
-                    f.set.click(p, c.hard.v, o.lastClass);
+                        start = (z > x ) ? $(start[0]) : $(start[start.length-1]);
+                        c.hard.v = start;
+                        f.set.click(p, c.hard.v, o.lastClass);
                     } else {
                         c.hard.v = s.first();
                         f.set.click(p, c.hard.v, o.lastClass);
@@ -376,13 +484,14 @@
             }
 
             f.h.on(c.current.v, o);
+            f.set.clicks(c.hard.v, c.current.v, null, p, o);
 
         },
         unHAll: function(p,o) {
-                f.h.off(p.find(o.children), o);
+            f.h.off(p.find(o.children), o);
         },
         hAll: function(p,o) {
-                f.h.on(p.find(o.children), o);
+            f.h.on(p.find(o.children), o);
         },
         unHExist: function(bool,el,o) {
             if(bool) {

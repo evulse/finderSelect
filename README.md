@@ -4,57 +4,11 @@
 
 ## How to Use
 
-To enable selecting on all tables simply call
-
-    $('table').finderSelect();
-
-If you do not want to allow selecting of headers and footers use
-
-    $('table tbody').finderSelect();
-
-If you want to use a custom class for highlighting such as using Twitter Bootstrap
-
-    $('table tbody').finderSelect({selectClass:'warning'}); // Will Highlight Yellow in Twitter Bootstrap 3 RC1
-
-To allow finderSelect to work on other children elements other than tr specify the children setting.
-
-    $('div').finderSelect({selectClass:'label-success',children:'span'});
-
-All available settings
-
-    var options = {
-        selectClass: "selected",
-        children: false,
-        event: "mousedown",
-        cursor: "pointer",
-        dragEvent: "mouseenter",
-        enableClickDrag: true,
-        enableShiftClick: true,
-        enableCtrlClick: true,
-        enableSingleClick: true,
-        enableDisableSelection: true,
-        enableTouchCtrlDefault: true,
-        totalSelector: false,
-        menuSelector: false,
-        menuXOffset: 0,
-        menuYOffset: 0
-
-    };
-
-Also the following event is omitted whenever an update occurs.
-
-    finderSelectUpdate
-
-This can be used to show total selected items
-
-    $('.table-select tbody').finderSelect({selectClass:'warning'});
-
-    $(".table-select tbody").on("finderSelectUpdate", function(event){
-        $('.selected-count').html($(this).find('tr.warning').length)
-    });
+For the most up to date documentation please visit (http://evulse.github.io/finderSelect "finderSelect")
 
 ## Change Log
 
+*    0.6.0: Added Hooks and External methods.
 *    0.5.0: Added Ctrl+A/Cmd+A Select All feature. Rewrote core to work with Zepto without plugins. System now stores data as classes.
 *    0.4.0: Matched to Mac OSX Finder 100%. Added support for when a selection touches a pre-existing selection and then is moved.
 *    0.3.0: Touch devices will now default to Ctrl + Click functionality allowing them to make multiple selections.

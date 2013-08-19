@@ -12,7 +12,11 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="prettify.css" rel="stylesheet">
     <style>
+        body {
+            background: #f8f8f8;
+        }
         tr.selected {
             background-color: #3875d7;
             color: #FFF;
@@ -201,20 +205,30 @@
 
             <span><span class="demo1-count">0</span> File(s) Selected &nbsp;</span><br><br>
             <button class="btn btn-primary btn-mini demo1-trash">Send Selected to Trash</button><br><br>
-            <pre>$(function() {
-        $('#demo1').finderSelect({children:'tr',totalSelector:'.demo1-count',menuSelector:'#demo1-menu'});
+            <pre class="prettyprint lang-js">$(function() {
+        var demo1 = $('#demo1').finderSelect({children:"tr",totalSelector:".demo1-count",menuSelector:"#demo1-menu"});
 
         $(".demo1-trash").click(function(){
-            $('#demo1').find('tr.selected').remove();
-            $('#demo1').trigger('finderSelectUpdate');
+            demo1.finderSelect("selected").remove();
+            demo1.finderSelect("update");
         });
 });</pre>
         </div>
     <div class="col-lg-12">
         <h2>Extending</h2>
         <p>finderSelect was design to be easily extended. See the example below to see how the highlighting functions can be overridden to provide new functionality.</p>
+        
         <table class="table table-condensed" id="demo5">
-            <tr>
+            <thead>
+               <tr>
+                <td><input type="checkbox"></td>
+                <td>Name</td>
+                <td>Type</td>
+                <td>Last Accessed</td>
+            </tr>
+            </thead>
+            <tbody>
+               <tr>
                 <td><input type="checkbox"></td>
                 <td>hello.png</td>
                 <td>Portable Networks Graphic image</td>
@@ -255,30 +269,45 @@
                 <td>hello.png</td>
                 <td>Portable Networks Graphic image</td>
                 <td>Friday, 24 July 2013 4:59PM</td>
-            </tr>
+            </tr>         
+            </tbody>
+
         </table>
 
-            <pre>$(function() {
-    $('#demo5').finderSelect({children:'tr'});
+            <pre class="prettyprint lang-js">$(function() {
+                
+        // Initialise the Demo with the Ctrl Click Functionality as the Default
+        var demo5 = $('#demo5 tbody').finderSelect({enableDesktopCtrlDefault:true});
 
-    $("#demo5 tr").dblclick(function() {
-        alert( "Double Click detected. Useful for linking to detail page." ); // Enable double click
-    });
+        // Add a hook to the highlight function so that checkboxes in the selection are also checked.
+        demo5.finderSelect('addHook','highlight:before', function(el) {
+            el.find('input').prop('checked', true);
+        });
 
-    $.fn.finderSelect.h.on =  function(el, o) {
-        el.removeClass(o.unSelectClass);
-        el.addClass(o.selectClass);
-        el.find('input').prop('checked', true); // Add functionality to check checkboxes inside selected rows
-    };
-    $.fn.finderSelect.h.off =  function(el,o) {
-        el.removeClass(o.selectClass);
-        el.addClass(o.unSelectClass);
-        el.find('input').prop('checked', false); // Add functionality to check checkboxes inside selected rows
-    };
+        // Add a hook to the unHighlight function so that checkboxes in the selection are also unchecked.
+        demo5.finderSelect('addHook','unHighlight:before', function(el) {
+            el.find('input').prop('checked', false);
+        });
 
-    $("#demo5 tr input").click(function(e) {
-        e.preventDefault();
-    });
+        // Enable Double Click Event.
+        demo5.finderSelect("children").dblclick(function() {
+            alert( "Double Click detected. Useful for linking to detail page." );
+        });
+
+        // Prevent Checkboxes from being triggered twice when click on directly.
+        demo5.on("click", ":checkbox", function(e){
+            e.preventDefault();
+        });
+
+        // Add Select All functionality to the checkbox in the table header row.
+        $('#demo5').find("thead input[type='checkbox']").change(function () {
+            if ($(this).is(':checked')) {
+                demo5.finderSelect('highlightAll');
+            } else {
+                demo5.finderSelect('unHighlightAll');
+
+            }
+        });
 
 });</pre>
     </div>
@@ -327,7 +356,7 @@
             </tr>
             </tbody>
         </table>
-            <pre>$(function() {
+            <pre class="prettyprint lang-js">$(function() {
     $('#demo2').find('tbody').finderSelect();
 });</pre>
     </div>
@@ -376,8 +405,8 @@
             </tr>
             </tbody>
         </table>
-            <pre>$(function() {
-    $('#demo3').find('tbody').finderSelect({selectClass:'warning'});
+            <pre class="prettyprint lang-js">$(function() {
+    $('#demo3').find('tbody').finderSelect({selectClass:'danger'});
 });</pre>
     </div>
     <div class="col-lg-12">
@@ -398,9 +427,286 @@
         <span class="label">Label</span>
     </div>
         <p></p>
-            <pre>$(function() {
+            <pre class="prettyprint lang-js">$(function() {
      $('#demo4').finderSelect({selectClass:'label-success'});
 });</pre>
+    </div>
+    
+    <div class="col-lg-12">
+        <h2>Configuration Options</h2>
+        <p>The following configuration options are available.</p>
+        <div class="panel">
+  <div class="panel-body">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Default</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>selectClass</td>
+            <td>string</td>
+            <td>The Class applied to selected elements.</td>
+            <td>"selected"</td>
+        </tr>
+        <tr>
+            <td>unSelectClass</td>
+            <td>string</td>
+            <td>The Class applied to un-selected elements.</td>
+            <td>"un-selected"</td>
+        </tr>
+        <tr>
+            <td>currentClass</td>
+            <td>string</td>
+            <td>The Class applied to the current selected element.</td>
+            <td>"selected-current"</td>
+        </tr>
+        <tr>
+            <td>lastClass</td>
+            <td>string</td>
+            <td>The Class applied to the last selected element.</td>
+            <td>"selected-last"</td>
+        </tr>
+        <tr>
+            <td>shiftClass</td>
+            <td>string</td>
+            <td>The Class applied to the last shift selected element.</td>
+            <td>"selected-shift"</td>
+        </tr>
+        <tr>
+            <td>ctrlClass</td>
+            <td>string</td>
+            <td>The Class applied to the last ctrl selected element.</td>
+            <td>"selected-ctrl"</td>
+        </tr>
+        <tr>
+            <td>triggerUpdate</td>
+            <td>string</td>
+            <td>The Event omitted whenever finderSelect is updated.</td>
+            <td>"finderSelectUpdate"</td>
+        </tr>
+        <tr>
+            <td>children</td>
+            <td>selector string</td>
+            <td>Manually set the child element selector. Eg "li" for list elements</td>
+            <td>"selected"</td>
+        </tr>
+        <tr>
+            <td>event</td>
+            <td>event string</td>
+            <td>The Event which triggers a selection.</td>
+            <td>"mousedown"</td>
+        </tr>
+        <tr>
+            <td>cursor</td>
+            <td>css string</td>
+            <td>The cursor applied to the finderSelect element</td>
+            <td>"pointer"</td>
+        </tr>
+        <tr>
+            <td>dragEvent</td>
+            <td>string</td>
+            <td>The Event which triggers a drag selection.</td>
+            <td>"mouseenter"</td>
+        </tr>
+        <tr>
+            <td>enableClickDrag</td>
+            <td>boolean</td>
+            <td>Enable/Disable Ctrl + Click + Drag.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableShiftClick</td>
+            <td>boolean</td>
+            <td>Enable/Disable Shift + Click bulk selection.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableCtrlClick</td>
+            <td>boolean</td>
+            <td>Enable/Disable Ctrl + Click Toggle Click.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableSingleClick</td>
+            <td>boolean</td>
+            <td>Enable/Disable The standard Single Click.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableSelectAll</td>
+            <td>boolean</td>
+            <td>Enable/Disable Select All Keyboard Shortcuts.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableDisableSelection</td>
+             <td>boolean</td>
+            <td>Enable/Disable Disabling Text Selection when needed.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableTouchCtrlDefault</td>
+              <td>boolean</td>
+            <td>Enable/Disable Ctrl + Click as the default on touch devices.</td>
+            <td>true</td>
+        </tr>
+        <tr>
+            <td>enableDesktopCtrlDefault</td>
+            <td>boolean</td>
+            <td>Enable/Disable Ctrl + Click as the default.</td>
+            <td>false</td>
+        </tr>
+        <tr>
+            <td>totalSelector</td>
+            <td>selector string</td>
+            <td>The Selector used to update row counts.  eg ".demo-count"</td>
+            <td>false</td>
+        </tr>
+        <tr>
+            <td>menuSelector</td>
+            <td>string</td>
+            <td>The Selector used to show the menu elemenet. eg "#demo-menu"</td>
+            <td>false</td>
+        </tr>
+        <tr>
+            <td>menuXOffset</td>
+            <td>integer</td>
+            <td>The X Offset for the menu element</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>menuYOffset</td>
+            <td>integer</td>
+            <td>The Y Offset for the menu element</td>
+            <td>0</td>
+        </tr>
+    </tbody>
+
+</table>
+  </div>
+</div>
+
+    </div>
+    
+     <div class="col-lg-12">
+        <h2>Methods</h2>
+        <p>The following methods are available.</p>
+        <div class="panel">
+  <div class="panel-body">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Parameters</th>
+            <th>Description</th>
+            <th>Usage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>highlight</td>
+            <td>element</td>
+            <td>Highlights elements</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('highlight', $('ul'));</pre></td>
+        </tr>
+        <tr>
+            <td>unHighlight</td>
+            <td>-</td>
+            <td>UnHighlights elements</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('unHighlight', $('ul'));</pre></td>
+        </tr>
+        <tr>
+            <td>highlightAll</td>
+            <td>-</td>
+            <td>Highlights all child elements.</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('highlightAll');</pre></td>
+        </tr>
+        <tr>
+            <td>unHighlightAll</td>
+            <td>-</td>
+            <td>UnHighlights all child elements</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('unHighlightAll');</pre></td>
+        </tr>
+        <tr>
+            <td>selected</td>
+            <td>-</td>
+            <td>Returns all the selected elements.</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('selected');</pre></td>
+        </tr>
+        <tr>
+            <td>children</td>
+            <td>-</td>
+            <td>Returns all the child elements</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('children');</pre></td>
+        </tr>
+        <tr>
+            <td>update</td>
+            <td>-</td>
+            <td>Forces an update on element. Useful for when dom changes occur outside finderSelect.</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('update');</pre></td>
+        </tr>
+        <tr>
+            <td>addHook</td>
+            <td>hook, function</td>
+            <td>Adds a hook to the finderSelect instance. Allows multiple assignment.</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('addHook','unHighlight:before', function() { /* do something */ });</pre></td>
+        </tr>
+    </tbody>
+
+</table>
+  </div>
+</div>
+    </div>
+    
+       <div class="col-lg-12">
+        <h2>Hooks</h2>
+        <p>The following hooks are available.</p>
+        <div class="panel">
+  <div class="panel-body">
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Parameters</th>
+            <th>Description</th>
+            <th>Usage</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>highlight:before</td>
+            <td>element, options</td>
+            <td>Called before the Highlight event</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('addHook','highlight:before', function(element, options) { /* do something */ });</pre></td>
+        </tr>
+        <tr>
+            <td>highlight:after</td>
+            <td>element, options</td>
+            <td>Called after the Highlight event</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('addHook','highlight:after', function(element, options) { /* do something */ });</pre></td>
+        </tr>
+        <tr>
+            <td>unHighlight:before</td>
+            <td>element, options</td>
+            <td>Called before the unHighlight event</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('addHook','unHighlight:before', function(element, options) { /* do something */ });</pre></td>
+        </tr>
+        <tr>
+            <td>unHighlight:after</td>
+            <td>element, options</td>
+            <td>Called after the unHighlight event</td>
+            <td><pre class="prettyprint">$('#demo').finderSelect('addHook','unHighlight:after', function(element, options) { /* do something */ });</pre></td>
+        </tr>
+    </tbody>
+
+</table>
+  </div>
+</div>
     </div>
 
     <div class="col-lg-12">
@@ -420,42 +726,60 @@
 <ul class="dropdown-menu" id="demo1-menu">
     <li><a class="demo1-trash">Trash <span class="demo1-count">0</span> File(s)</a></li>
 </ul>
-<script src="http://code.jquery.com/jquery.js"></script>
-<!--<script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>-->
+<!--<script src="http://code.jquery.com/jquery.js"></script>-->
+<script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
 <script src="jquery.finderSelect.js"></script>
 <script>
     $(function() {
-        $('#demo1').finderSelect({children:"tr",totalSelector:".demo1-count",menuSelector:"#demo1-menu"});
+        var demo1 = $('#demo1').finderSelect({children:"tr",totalSelector:".demo1-count",menuSelector:"#demo1-menu"});
 
         $(".demo1-trash").click(function(){
-            $('#demo1').find('tr.selected').remove();
-            $('#demo1').trigger('finderSelectUpdate');
+            demo1.finderSelect("selected").remove();
+            demo1.finderSelect("update");
         });
 
         $('#demo2').find('tbody').finderSelect();
-        $('#demo3').find('tbody').finderSelect({selectClass:"warning"});
+        $('#demo3').find('tbody').finderSelect({selectClass:"danger"});
         $('#demo4').finderSelect({selectClass:'label-success'});
+        
+        // Initialise the Demo with the Ctrl Click Functionality as the Default
+        var demo5 = $('#demo5 tbody').finderSelect({enableDesktopCtrlDefault:true});
 
-        $("#demo5 tr").dblclick(function() {
+        // Add a hook to the highlight function so that checkboxes in the selection are also checked.
+        demo5.finderSelect('addHook','highlight:before', function(el) {
+            el.find('input').prop('checked', true);
+        });
+
+
+        // Add a hook to the unHighlight function so that checkboxes in the selection are also unchecked.
+        demo5.finderSelect('addHook','unHighlight:before', function(el) {
+            el.find('input').prop('checked', false);
+        });
+
+        // Enable Double Click Event.
+        demo5.finderSelect("children").dblclick(function() {
             alert( "Double Click detected. Useful for linking to detail page." );
         });
 
-        $.fn.finderSelect.h.on =  function(el, o) {
-            el.removeClass(o.unSelectClass);
-            el.addClass(o.selectClass);
-            el.find('input').prop('checked', true); // Add functionality to check checkboxes inside selected rows
-        };
-        $.fn.finderSelect.h.off =  function(el,o) {
-            el.removeClass(o.selectClass);
-            el.addClass(o.unSelectClass);
-            el.find('input').prop('checked', false); // Add functionality to check checkboxes inside selected rows
-        };
-
-        $("#demo5 tr input").click(function(e) {
+        // Prevent Checkboxes from being triggered twice when click on directly.
+        demo5.on("click", "input[type='checkbox']", function(e){
             e.preventDefault();
         });
 
-        $('#demo5').finderSelect({children:"tr"});
+        // Add Select All functionality to the checkbox in the table header row.
+        $('#demo5').find("thead input[type='checkbox']").change(function () {
+            if ($(this).is(':checked')) {
+                demo5.finderSelect('highlightAll');          
+            } else {
+                demo5.finderSelect('unHighlightAll');
+            }
+        });
+
+
+        prettyPrint();
+
+
     });
 </script>
 </body>
