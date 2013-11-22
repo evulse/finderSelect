@@ -107,17 +107,21 @@
     
     function highlight(el) {
         f.h.on(el, o);
+        return this;
     }
     function unHighlight(el) {
         f.h.off(el, o);
+        return this;
     }
     function highlightAll() {
         var p = $(this);
         f.h.on(p.find(o.children), o);
+        return this;
     }
     function unHighlightAll() {
         var p = $(this);
         f.h.off(p.find(o.children), o);
+        return this;
     }
     function selected() {
         var p = $(this);
@@ -130,6 +134,7 @@
     function update() {
         var p = $(this);
         f.t.update(p, o);
+        return this;
     }
     function addHook(hookName, fn) {
                 if(typeof hookName == "object"){
@@ -147,6 +152,8 @@
                     }
                     hooks[hookName].push(fn);
                 }
+
+                return this;
     }
 
     f.core = {
