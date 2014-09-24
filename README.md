@@ -8,6 +8,7 @@ For the most up to date documentation please visit (http://evulse.github.io/find
 
 ## Change Log
 
+*    0.7.0: Fixed Ctrl+A not updating and Added Up and Down Keys including Shift+Direction, Option+Direction and Shift+Option+Direction.
 *    0.6.0: Added Hooks and External methods.
 *    0.5.0: Added Ctrl+A/Cmd+A Select All feature. Rewrote core to work with Zepto without plugins. System now stores data as classes.
 *    0.4.0: Matched to Mac OSX Finder 100%. Added support for when a selection touches a pre-existing selection and then is moved.
