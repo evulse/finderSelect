@@ -215,6 +215,56 @@
                         }
                     }
                 }
+                console.log(e.keyCode);
+                if (e.keyCode == 38) {
+                    var last = f.get.click(p, o.shiftClass);
+                    if(last.length == 0) {
+                        last = f.get.click(p, o.lastClass);
+                    }
+                    var cur = f.get.prev(last,o);
+                    if(last.length == 0) {
+                        cur = p.find(o.children).last();
+                    }
+                    if(f.detect.alt(e)) {
+                        cur = p.find(o.children).first();
+                    }
+                    e.preventDefault();
+                    if(cur.length != 0) {
+
+                        if(f.detect.shift(e) && o.enableShiftClick) {
+                            var c = f.get.clicks(p,o,cur);
+                            f.t.shiftClick(p,c,o);
+                        } else {
+                            var c = f.get.clicks(p,o,cur);
+                            f.t.singleClick(p,c,o);
+                        }
+                    }
+                }
+                if (e.keyCode == 40) {
+                    var last = f.get.click(p, o.shiftClass);
+                    if(last.length == 0) {
+                        last = f.get.click(p, o.lastClass);
+                    }
+                    var cur = f.get.next(last,o);
+                    if(last.length == 0) {
+                        cur = p.find(o.children).first();
+                    }
+                    if(f.detect.alt(e)) {
+                        cur = p.find(o.children).last();
+                    }
+                    e.preventDefault();
+                    if(cur.length != 0) {
+
+                        if(f.detect.shift(e) && o.enableShiftClick) {
+                            var c = f.get.clicks(p,o,cur);
+                            f.t.shiftClick(p,c,o);
+                        } else {
+                            var c = f.get.clicks(p,o,cur);
+                            f.t.singleClick(p,c,o);
+                        }
+
+                    }
+                }
             }
 
         },
@@ -389,6 +439,12 @@
             }
             return $($els)
         },
+        next: function(p, o) {
+            return p.next(o.children);
+        },
+        prev: function(p, o) {
+            return p.prev(o.children);
+        },
         hook: function(hookName, data){
             var hooked = hooks[hookName]
 
@@ -425,6 +481,12 @@
             var s = f.get.siblings(p,o);
             f.h.tog(c.current.v, o);
             f.h.state(s,o);      
+            f.set.clicks(c.current.v, null, null, p, o);
+        },
+        toggleClick: function(p,c,o) {
+            var s = f.get.siblings(p,o);
+            f.h.tog(c.current.v, o);
+            f.h.state(s,o);
             f.set.clicks(c.current.v, null, null, p, o);
         },
         toggleDrag: function(p,c,o) {
@@ -496,9 +558,11 @@
         },
         unHAll: function(p,o) {
             f.h.off(p.find(o.children), o);
+            f.t.update(p, o);
         },
         hAll: function(p,o) {
             f.h.on(p.find(o.children), o);
+            f.t.update(p, o);
         },
         unHExist: function(bool,el,o) {
             if(bool) {
